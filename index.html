@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Puzzle Blocks - A bilingual block puzzle game. Place pieces, clear rows and columns, beat your high score!">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>Puzzle Blocks | پازل بلوکی</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Start Screen -->
+  <div id="start-screen" class="screen active">
+    <div class="start-content">
+      <h1 class="game-title">
+        <span data-i18n="title">Puzzle Blocks</span>
+        <span class="title-sub" data-i18n="titleSub">پازل بلوکی</span>
+      </h1>
+      <p class="tagline" data-i18n="tagline">Place blocks. Clear lines. Chase the high score.</p>
+
+      <div class="lang-toggle">
+        <button id="btn-lang-en" class="lang-btn active" data-lang="en">English</button>
+        <button id="btn-lang-fa" class="lang-btn" data-lang="fa">فارسی</button>
+      </div>
+
+      <div class="mode-select">
+        <h2 data-i18n="selectMode">Select Mode</h2>
+        <div class="mode-buttons">
+          <button class="mode-btn" data-mode="easy">
+            <span class="mode-title" data-i18n="easyMode">Easy</span>
+            <span class="mode-desc" data-i18n="easyDesc">Rotate pieces by clicking</span>
+          </button>
+          <button class="mode-btn" data-mode="hard">
+            <span class="mode-title" data-i18n="hardMode">Hard</span>
+            <span class="mode-desc" data-i18n="hardDesc">No rotation – place as is</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="menu-actions">
+        <button id="btn-start" class="btn primary" disabled data-i18n="startGame">Start Game</button>
+        <button id="btn-continue" class="btn secondary" style="display:none;" data-i18n="continueGame">Continue</button>
+      </div>
+
+      <div class="high-score-display">
+        <span data-i18n="highScore">High Score</span>: <strong id="menu-highscore">0</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen">
+    <header class="game-header">
+      <div class="score-panel">
+        <div class="score-item">
+          <span class="label" data-i18n="score">Score</span>
+          <span id="score" class="value">0</span>
+        </div>
+        <div class="score-item">
+          <span class="label" data-i18n="highScore">High Score</span>
+          <span id="highscore" class="value">0</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-undo" class="icon-btn" title="Undo" data-i18n-title="undo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 10h10a5 5 0 0 1 5 5v2M3 10l4-4M3 10l4 4"/>
+          </svg>
+        </button>
+        <button id="btn-save" class="icon-btn" title="Save" data-i18n-title="save">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+        </button>
+        <button id="btn-lang-toggle" class="icon-btn lang-toggle-btn" title="Language">
+          <span id="lang-indicator">EN</span>
+        </button>
+        <button id="btn-menu" class="icon-btn" title="Menu" data-i18n-title="menu">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="game-main">
+      <div id="board-wrapper">
+        <div id="board" class="board"></div>
+      </div>
+
+      <div class="pieces-area">
+        <div class="pieces-label" data-i18n="nextPieces">Next Pieces</div>
+        <div id="pieces-container" class="pieces-container"></div>
+      </div>
+    </main>
+
+    <div id="message" class="message" aria-live="polite"></div>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div id="gameover-overlay" class="overlay">
+    <div class="overlay-card">
+      <h2 data-i18n="gameOver">Game Over</h2>
+      <p class="final-score">
+        <span data-i18n="yourScore">Your Score</span>: <strong id="final-score">0</strong>
+      </p>
+      <p class="best-score" id="new-high-msg" style="display:none;" data-i18n="newHighScore">New High Score!</p>
+      <div class="overlay-actions">
+        <button id="btn-restart" class="btn primary" data-i18n="playAgain">Play Again</button>
+        <button id="btn-to-menu" class="btn secondary" data-i18n="backToMenu">Back to Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Dialog -->
+  <div id="confirm-overlay" class="overlay">
+    <div class="overlay-card small">
+      <p id="confirm-text"></p>
+      <div class="overlay-actions">
+        <button id="confirm-yes" class="btn primary" data-i18n="yes">Yes</button>
+        <button id="confirm-no" class="btn secondary" data-i18n="no">No</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
