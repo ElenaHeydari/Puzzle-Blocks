@@ -327,7 +327,8 @@ body[dir="rtl"] {
   padding: 4px;
   border-radius: 8px;
   box-shadow: var(--shadow);
-  /* size set by JS */
+  /* Keep grid physical LTR so cell indexing matches drag coordinates in RTL UI */
+  direction: ltr;
 }
 
 .cell {
@@ -383,6 +384,7 @@ body[dir="rtl"] {
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
+  direction: ltr;
 }
 
 .piece-slot {
@@ -401,6 +403,8 @@ body[dir="rtl"] {
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
+  /* Prevent RTL from mirroring polyomino shapes */
+  direction: ltr;
 }
 
 .piece-slot:hover {
@@ -421,6 +425,7 @@ body[dir="rtl"] {
   display: grid;
   gap: 3px;
   pointer-events: none;
+  direction: ltr;
 }
 
 .piece-cell {
@@ -433,13 +438,17 @@ body[dir="rtl"] {
 /* Drag ghost */
 .drag-ghost {
   position: fixed;
+  left: 0;
+  top: 0;
   pointer-events: none;
   z-index: 1000;
   opacity: 0.9;
-  transform: translate(-50%, -50%);
   display: grid;
   gap: 2px;
   filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
+  /* Force LTR so RTL page direction never mirrors drag movement */
+  direction: ltr;
+  will-change: transform;
 }
 
 .drag-ghost .piece-cell {
@@ -585,3 +594,4 @@ body[dir="rtl"] {
 [dir="rtl"] .header-actions {
   flex-direction: row-reverse;
 }
+

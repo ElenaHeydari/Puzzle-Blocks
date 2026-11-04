@@ -449,6 +449,7 @@
         const { rows, cols, grid } = shapeToGrid(piece.shape);
         const pieceGrid = document.createElement('div');
         pieceGrid.className = 'piece-grid';
+        pieceGrid.setAttribute('dir', 'ltr');
         pieceGrid.style.gridTemplateColumns = `repeat(${cols}, ${pieceCellSize}px)`;
         pieceGrid.style.gridTemplateRows = `repeat(${rows}, ${pieceCellSize}px)`;
 
@@ -561,14 +562,15 @@
         ghostEl.appendChild(cell);
       }
     }
+    ghostEl.setAttribute('dir', 'ltr');
     document.body.appendChild(ghostEl);
     moveGhost(x, y);
   }
 
   function moveGhost(x, y) {
     if (!ghostEl) return;
-    ghostEl.style.left = x + 'px';
-    ghostEl.style.top = y + 'px';
+    // Use transform with physical viewport coords so RTL never inverts X
+    ghostEl.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%)';
   }
 
   function removeGhost() {
@@ -847,3 +849,4 @@
   // Start
   init();
 })();
+
